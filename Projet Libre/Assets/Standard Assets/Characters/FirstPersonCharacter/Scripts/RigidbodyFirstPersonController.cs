@@ -11,12 +11,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [Serializable]
         public class MovementSettings
         {
-            public float ForwardSpeed = 8.0f;   // Speed when walking forward
-            public float BackwardSpeed = 4.0f;  // Speed when walking backwards
-            public float StrafeSpeed = 4.0f;    // Speed when walking sideways
-            public float RunMultiplier = 2.0f;   // Speed when sprinting
+            public float ForwardSpeed = 100f;   // Speed when walking forward
+            public float BackwardSpeed = 80f;  // Speed when walking backwards
+            public float StrafeSpeed = 90f;    // Speed when walking sideways
+            public float RunMultiplier = 3f;   // Speed when sprinting
 	        public KeyCode RunKey = KeyCode.LeftShift;
-            public float JumpForce = 30f;
+            public float JumpForce = 500f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
             [HideInInspector] public float CurrentTargetSpeed = 8f;
 
@@ -69,9 +69,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public class AdvancedSettings
         {
             public float groundCheckDistance = 0.01f; // distance for checking if the controller is grounded ( 0.01f seems to work best for this )
-            public float stickToGroundHelperDistance = 0.5f; // stops the character
+            public float stickToGroundHelperDistance = 0.6f; // stops the character
             public float slowDownRate = 20f; // rate at which the controller comes to a stop when there is no input
-            public bool airControl; // can the user control the direction that is being moved in the air
+            public bool airControl = true; // can the user control the direction that is being moved in the air
         }
 
 
@@ -119,18 +119,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
-            mouseLook.Init (transform, cam.transform);
+            mouseLook.Init(transform, cam.transform);
         }
 
 
         private void Update()
         {
-            RotateView();
+			RotateView();
 
-            if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
-            {
-                m_Jump = true;
-            }
+			if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
+				m_Jump = true;
         }
 
 
@@ -208,7 +206,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Vector2 GetInput()
         {
-            
             Vector2 input = new Vector2
                 {
                     x = CrossPlatformInputManager.GetAxis("Horizontal"),
